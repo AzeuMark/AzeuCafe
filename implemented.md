@@ -178,7 +178,36 @@
 - `client/src/components/{PhotoField,MenuItemForm}.jsx`, `client/src/pages/{OwnerMenuPage,OwnerOrdersPage}.jsx`
 
 ### Next
-- Phase 6 — security-demo slideshow: 16 slides, 3 acts, script drawer, CodeWindow with the real aescrypt.js, live EncryptPlayground
+- ~~Phase 6 — security-demo slideshow~~ → **Phase 6 done, see entry below**
+
+---
+
+## [Phase 6 — Security Presentation at /demo] — 2026-11-05
+
+**Status:** ✅ complete — the deck for the instructor is live
+
+### Built (`client/src/security-demo/` per client-plan.md §4)
+- **`data/slides.js`** — all 16 slide definitions + the FULL spoken English script under each one; act metadata (Act 1 · Usage = blue, Act 2 · Security = amber, Act 3 · AESCrypt = green). Deck flow exactly per plan: title → usage walkthrough (6 slides) → security overview (3 slides) → AESCrypt deep-dive (3 slides) → team → thank-you
+- **`SlideDeck.jsx`** — the engine: keyboard (← → ↑ ↓ · Space · PageUp/Down · Home/End), swipe drag, clickable act-colored progress dots, direction-aware AnimatePresence transitions, footer signature motif (AzeuMark cup + "Uelmark G. Valdehueza")
+- **`PresenterNotes.jsx`** — the hidden-by-default script drawer (bottom-right button + **S** key, guarded against typing in inputs and Ctrl/Cmd/Alt combos); act-colored spine, prev/next inside the drawer so the audience never sees the script
+- **`SlideContent.jsx`** — the 16 visuals: roles cards, auth-modal mockouts, a REAL-photo menu trio, checkout claim-code mock, the 5-status chips + rules table, PhotoField breakdown, owner dashboard TRANSITIONS table, the protect-table (per-data-type storage decisions), encrypted-vs-bcrypt-vs-plaintext 3-column table, keys & honest limitations
+- **`LockSketch.jsx`** — self-drawing SVG padlock (shackle → body → keyhole → satisfying click-twist) on the "Meet the file" slide
+- **`CodeWindow.jsx`** — **the REAL `aescrypt.js`** imported via `?raw` from the server tree (zero copy, zero drift; `server.fs.allow ['..']` pre-wired in Phase 0 for exactly this), editor chrome, typed filename animation, line gutter + comment/export highlighting
+- **`CipherMorph.jsx`** — animated plaintext ⇄ ciphertext glyph-scramble used across the deck
+- **`EncryptPlayground.jsx`** — the Act-3 finale against the REAL crypto: input → `POST /api/security/demo-encrypt` → live cipher morph → decrypt back; **"Corrupt 1 character" button** that flips a byte inside the last base64 segment so decryption *provably* fails with the server's GCM message
+- `pages/DemoPage.jsx` re-exports the deck so the `/demo` route kept its place in App.jsx
+
+### Verified (live run: server :5000 + dev :5173)
+- `demo-encrypt` → real `v1.<iv>.<tag>.<cipher>` payload ✓ · round-trip `demo-decrypt` → original text ✓ · **tampered cipher → refused** with "wrong key or the ciphertext was tampered with." ✓
+- Dev-mode `?raw` fetch of `aescrypt.js` through Vite → **HTTP 200**, full file served as a module string ✓ (build-time inlining also ✓, 483 modules)
+- `vite build` ✓ · oxlint 0 errors (warnings are the known benign set + 2 new accepted: rAF ref pattern in CipherMorph, setState-in-effect in CodeWindow)
+
+### Files
+- `security-demo/{DemoPage.jsx, data/slides.js}`, `security-demo/components/{SlideDeck,PresenterNotes,SlideContent,CodeWindow,CipherMorph,LockSketch,EncryptPlayground}.jsx`, `pages/DemoPage.jsx`
+
+### Next
+- Phase 7 — full QA pass, README, demo rehearsal (user supplies the groupmate name for the Team slide's reserved slot)
+
 
 
 
