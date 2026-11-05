@@ -84,7 +84,7 @@
 ### Files
 - src: `api/client.js`, `context/{Theme,Auth,Cart}Context.jsx`, `components/{Navbar,Footer,AuthModal,ProtectedRoute,Logo,PhaseStub}.jsx`, `App.jsx`, `pages/{Home,Menu,Cart,Checkout,MyOrders,OwnerMenu,OwnerOrders,Demo,NotFound}Page.jsx`
 
-- ~~Phase 3 — landing page~~ → **Phase 3 done, see entry below**
+- ~~Phase 3 — landing page~~ → **Phase 3 done, see below**
 
 ---
 
@@ -114,7 +114,32 @@
 - `client/src/pages/HomePage.jsx`, `client/src/assets/landing-{hero,interior}.jpg`, `client/public/favicon.svg`, `client/src/utils/format.js`, `CREDITS.md`
 
 ### Next
-- Phase 4 — ordering full loop: MenuPage, CartPage, CheckoutPage, MyOrdersPage + bundle the 12 menu item photos
+- ~~Phase 4 — ordering loop~~ → **Phase 4 done, see entry below**
+
+---
+
+## [Phase 4 — Ordering Full Loop] — 2026-11-05
+
+**Status:** ✅ complete
+
+### Built
+- **12 menu-item photos bundled**: fetched from Unsplash into `client/public/menu/*.jpg` (all first/second-choice candidates, zero fallbacks needed), matching the seeded slugs; sources logged in `CREDITS.md` — menu is photo-complete, still fully offline
+- **Shared components**: `MenuItemPhoto` (photo with serif-monogram fallback via onError — never a broken-image icon), `StatusChip` (5-status pill using theme tokens), `MenuItemCard` (photo, price, add-to-cart with transient "Added ✓")
+- **MenuPage**: category tabs (All / Espresso / Iced / Pastries / Snacks with live counts), category-grouped menu board with staggered framer-motion reveals, add-to-cart, cart shortcut chip
+- **CartPage**: photo rows, qty steppers (− / +, min 1 max 50), line totals, clear-cart, subtotal, checkout hand-off + cash reminder; crafted empty state
+- **CheckoutPage**: claim details prefilled from the encrypted-only-in-DB profile (editable), barista note, sticky summary sidebar (server re-prices at submit), places the real order → **success screen: big `AZ-000X` claim code, `PAY CASH AT THE COUNTER` panel, Waiting chip, track-orders CTA**, cart auto-clears
+- **MyOrdersPage**: polls `/orders/mine` every 10s; waiting → amber cash banner; ready → green "ready for pickup" banner + **"I've got it — mark completed"** button; processing → the exact rule notice (only owner can cancel); cancel allowed **only in Waiting** (with confirm dialog); per-order history chain rendered `waiting → processing → …`
+
+### Verification
+- `vite build` → ✓ 472 modules, photos + fonts bundled
+- lint: 0 errors (remaining warnings are oxlint heuristics on standard context/fetch patterns)
+
+### Files
+- `client/public/menu/*.jpg` (12), `components/{MenuItemPhoto,StatusChip,MenuItemCard}.jsx`, `pages/{Menu,Cart,Checkout,MyOrders}Page.jsx`, `CREDITS.md`
+
+### Next
+- Phase 5 — Owner pages: menu manager (3-way PhotoField + soft-retire) and the order dashboard
+
 
 
 
