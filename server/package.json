@@ -1,0 +1,22 @@
+{
+  "name": "azeucafe-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "seed": "node src/scripts/seed.js",
+    "test:crypto": "node src/scripts/cryptoCheck.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.0",
+    "cookie-parser": "^1.4.0",
+    "cors": "^2.8.0",
+    "dotenv": "^16.0.0",
+    "express": "^5.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^8.0.0",
+    "multer": "^2.0.0"
+  }
+}

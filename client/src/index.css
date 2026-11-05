@@ -1,0 +1,34 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode (ThemeContext toggles <html class="dark">) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Warm Espresso Café — design tokens */
+@theme {
+  --color-latte: #faf4e8;      /* light background */
+  --color-foam: #fffdf7;       /* light surface */
+  --color-bean: #2b1b10;       /* light text / deep brown */
+  --color-espresso: #1a120c;   /* dark background */
+  --color-roast: #241811;      /* dark surface */
+  --color-milk: #f5eddf;       /* dark text / cream */
+  --color-caramel: #d29a5b;    /* primary accent */
+  --color-caramel-deep: #b5762f; /* accent on light */
+
+  --color-status-waiting: #e5a13c;
+  --color-status-processing: #4e86d8;
+  --color-status-ready: #3d8b5f;
+  --color-status-completed: #6f7f63;
+  --color-status-cancelled: #c4564a;
+
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', monospace;
+}
+
+body {
+  @apply bg-latte text-bean font-body antialiased;
+}
+
+.dark body {
+  @apply bg-espresso text-milk;
+}
