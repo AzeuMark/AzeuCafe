@@ -12,5 +12,8 @@ export default defineConfig({
     },
     // The security slideshow imports the REAL server AESCrypt file via ?raw
     fs: { allow: ['..'] },
+    // Cloudflare quick tunnels send a random *.trycloudflare.com Host header;
+    // scoped suffix allow so the demo tunnel can serve the dev app.
+    allowedHosts: ['.trycloudflare.com'],
   },
 })

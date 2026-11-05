@@ -232,7 +232,19 @@
 - rehearsal as above · `vite build` ✓ (483 modules, Phase 6) · oxlint 0 errors · server boots clean after the fix
 
 ### Next
-- User runs the rehearsal themselves (`npm run dev` → the cheat-sheet in README) — and when ready, supplies the **groupmate name + role** to fill the reserved dashed slot on `/demo` slide 15 (one-line change in `security-demo/components/SlideContent.jsx` TeamSlide).
+- ~~Online deployment (Cloudflare quick tunnel)~~ → **done, see addendum below**
+
+---
+
+## Addendum [Online access — Cloudflare Tunnel] — 2026-11-05
+
+**Status:** ✅ live session verified
+
+- **Stack exposure**: single quick tunnel → `localhost:5173` (Vite dev proxies `/api` + `/uploads` to :5000, so one tunnel serves the client, API and owner uploads)
+- `vite.config.js`: added `server.allowedHosts: ['.trycloudflare.com']` — Vite ≥6 otherwise blocks rewritten Host headers with 403
+- Verified **through the public HTTPS URL**: SPA (`/`, `/demo`) → 200 · `GET /api/menu` → 12 items ✓ · bundled photos/favicon → 200 · `demo-encrypt` → real `v1.…` payload + **decrypt round-trip returned the original text** ✓ · **owner login → JWT httpOnly cookie over HTTPS → `/api/orders` with decrypted contacts (4 orders listed)** ✓
+- Behavior notes: quick-tunnel URLs are random and session-scoped (dies with the processes); documented in README "Run it online" incl. the named-tunnel upgrade path for a permanent URL
+
 
 
 

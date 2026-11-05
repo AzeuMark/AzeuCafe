@@ -75,6 +75,24 @@ Crypto self-check: `cd server && npm run test:crypto` (encrypt/decrypt/tamper ro
 
 ---
 
+## Run it online (Cloudflare Tunnel)
+
+The stack can be put on the public internet in one command — the demo tunnel
+bakes everything needed into the repo already (`allowedHosts` in `vite.config.js`,
+HTTPS-safe `httpOnly` cookies, Vite proxy for `/api` + `/uploads`):
+
+```powershell
+npm run dev                        # server :5000 + vite :5173 (keep running)
+cloudflared tunnel --url http://localhost:5173   # prints a public URL
+```
+
+- Anyone on the internet can open the printed `*.trycloudflare.com` URL —
+  the café app, owner dashboards and `/demo` all work (login included).
+- **Quick tunnels are session-scoped**: the URL changes on every restart and
+  dies when `npm run dev` or `cloudflared` stops. Re-run the two commands to get a fresh one.
+- For a permanent branded URL you need a Cloudflare account with a domain:
+  `cloudflared tunnel login` → named tunnel → DNS route. Not needed for a class demo.
+
 ## Project map
 
 ```
