@@ -59,6 +59,32 @@
 ### Commits
 - (this entry) `feat(phase-1): full backend — AESCrypt, models, auth, menu+upload, order state machine, demo endpoints, seed`
 
+- ~~Phase 2 — client shell~~ → **Phase 2 done, see entry below**
+
+---
+
+## [Phase 2 — Client Shell] — 2026-11-05
+
+**Status:** ✅ complete
+
+### Built
+- `api/client.js` — fetch wrapper (credentials:include, JSON, uniform `{message}` errors, `postForm` ready for uploads)
+- **ThemeContext** — light-first default, localStorage-persisted, toggles `<html class="dark">`, `T` keyboard shortcut (typing-safe)
+- **AuthContext** — boots with `GET /auth/me`, exposes login/register/logout + the modal controller (`openAuth(mode)`)
+- **CartContext** — localStorage-persisted cart (`{id,name,price,image,qty}`), add/setQty/remove/clear, count/total derived
+- Components: **Navbar** (links, cart badge, theme toggle, auth area, owner links) · **Footer** (Security Demo link + AzeuMark credit) · **AuthModal** (login/register tabs, fresh-state mount per open, Esc/backdrop close) · **ProtectedRoute** (auth + owner guards, redirects + opens login modal) · **Logo** (hand-drawn cup SVG, no stock icons) · PhaseStub
+- `App.jsx` — full route table with guards; 8 page files mounted (real content lands in P3–P6)
+- Hand-crafted cup-and-bean logo replaces the Vite starter identity
+
+### Verification
+- `vite build` → ✓ (45 modules, fonts bundled)
+- `oxlint` → 0 errors; 3 benign context-file warnings only
+- Vite dev serves shell: root div + `<title>AzeuCafe` ✔
+
+### Files
+- src: `api/client.js`, `context/{Theme,Auth,Cart}Context.jsx`, `components/{Navbar,Footer,AuthModal,ProtectedRoute,Logo,PhaseStub}.jsx`, `App.jsx`, `pages/{Home,Menu,Cart,Checkout,MyOrders,OwnerMenu,OwnerOrders,Demo,NotFound}Page.jsx`
+
 ### Next
-- Phase 2 — client shell: router, Auth/Cart/Theme contexts, Navbar/Footer, login/register modal, API client
+- Phase 3 — landing page + custom favicon (anti-slop pass)
+
 
