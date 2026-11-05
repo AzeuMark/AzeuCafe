@@ -17,11 +17,19 @@
 - Reworked `client/`: template demo stripped; Tailwind v4 plugin wired; **Warm Espresso Café design tokens + class-based dark mode** (`@custom-variant dark`) defined in `index.css`; bundled variable fonts (Fraunces / Inter / JetBrains Mono) via @fontsource-variable (offline-safe); Vite proxies `/api` + `/uploads` → `:5000`; `server.fs.allow` so the slideshow can import the **real** `server/src/utils/aescrypt.js` with `?raw`
 - Verified: server health endpoint responds; client builds cleanly
 
+### Verification
+- `GET /api/health` → `{"ok":true,"service":"AzeuCafe API"}` ✔
+- `npm run build` (client) → built in 213ms; fonts confirmed **bundled** as woff2 assets (offline-proof) ✔
+
 ### Files created/changed
 - `.gitignore`, `README.md`, `package.json` (root), `server-plan.md`, `client-plan.md`, `implemented.md`
 - `server/package.json`, `server/.env`, `server/.env.example`, `server/src/index.js`, `server/uploads/.gitkeep`
 - `client/package.json` (+deps), `client/vite.config.js`, `client/index.html`, `client/src/main.jsx`, `client/src/index.css`, `client/src/App.jsx`
 - Removed template demo: `client/src/App.css`, `client/src/assets/{react.svg,vite.svg,hero.png}`, `client/public/icons.svg`
+
+### Commits
+- `0f217c2` docs: project plans, implementation log, repo foundations
+- `6b75e34` feat(phase-0): server scaffold, client tokens/fonts/proxies, template demo stripped
 
 ### Next
 - Phase 1 — full backend: db, models, `aescrypt.js` + tamper test, auth, menu CRUD + upload, order state machine, demo-encrypt endpoints, seed
