@@ -1,0 +1,14 @@
+{
+  "name": "azeucafe",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n srv,web -c yellow,cyan \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "setup": "npm install --prefix server && npm install --prefix client",
+    "seed": "npm run seed --prefix server",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

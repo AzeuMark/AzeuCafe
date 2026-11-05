@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+build/
+
+# Environment (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# Owner-uploaded item photos (runtime data)
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Logs & OS noise
+*.log
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
