@@ -6,15 +6,19 @@ function httpError(status, message) {
   return err
 }
 
-/** Validates + normalizes the 3-way image payload (library/upload/url). */
+/** Validates + normalizes the 3-way image payload (library/upload/url).
+ *  Blank path on library/upload = intentionally photo-less (monogram fallback). */
 function normalizeImage(input) {
   if (input === undefined) return { type: 'library', path: '' }
   if (input === null || typeof input !== 'object') throw httpError(400, 'Photo must be an object { type, path }.')
   const type = input.type
   const path = String(input.path ?? '').trim()
   if (!['library', 'upload', 'url'].includes(type)) throw httpError(400, 'Photo type must be library, upload or url.')
-  if (type === 'url' && !/^https?:\/\//i.test(path)) throw httpError(400, 'URL photos must start with http(s)://.')
-  if (type !== 'url' && !path.startsWith('/')) throw httpError(400, 'Photo path must be an app path starting with "/".')
+  if (type === 'url') {
+    if (!/^https?:\/\//i.test(path)) throw httpError(400, 'URL photos must start with http(s)://.')
+  } else if (path && !path.startsWith('/')) {
+    throw httpError(400, 'Photo path must be an app path starting with "/".')
+  }
   return { type, path }
 }
 

@@ -206,7 +206,34 @@
 - `security-demo/{DemoPage.jsx, data/slides.js}`, `security-demo/components/{SlideDeck,PresenterNotes,SlideContent,CodeWindow,CipherMorph,LockSketch,EncryptPlayground}.jsx`, `pages/DemoPage.jsx`
 
 ### Next
-- Phase 7 — full QA pass, README, demo rehearsal (user supplies the groupmate name for the Team slide's reserved slot)
+- ~~Phase 7 — QA & README~~ → **Phase 7 done, see entry below**
+
+---
+
+## [Phase 7 — QA Pass, README, Demo Rehearsal] — 2026-11-05
+
+**Status:** ✅ complete — project is demo-ready
+
+### Built
+- **`README.md` rewritten as the final doc**: what-it-does table (customer / owner / class), the per-data-type security design table (bcrypt · AES-256-GCM · plaintext email · server-side pricing, mirroring deck slide 10), a proper quick start (prereqs → setup → `.env` from template → `npm run seed` → `npm run dev`), accounts, an 8-row **demo-day cheat-sheet** (URLs, keyboard map: deck ←→/Space/Home/End/**S**, theme **T**, playground corruption trick), project map, API overview, honest-notes box
+- **Full-stack rehearsal run against the live API** (new demo customer "Maria Santos", owner jar):
+  - Registration forced role `user` ✓ · user hitting `POST /api/menu` → **403** ✓
+  - Order placed from server-side prices: 2× Cappuccino + 1× Loaded Fries → total **₱420 computed by the server** ✓ and contact stored encrypted, returned decrypted for the owner's own ticket ✓
+  - The full dance: Accept → Processing · user cancel **while processing → 403** with the "ask the owner" message ✓ · owner cancel **while processing → legal** (intentional rule) · illegal payload in ready → **409** ✓ · owner Ready → user "I've got it" → **completed 200**, history chain `waiting -> processing -> ready -> completed` ✓ · terminal order refuses every further move → **409** ✓
+  - Unauthenticated guards: `/api/menu/all`, `/api/orders`, `/api/orders/mine` → all **401** ✓
+- **BUG FOUND & FIXED by the rehearsal** — `normalizeImage` rejected photo-less items (empty path) even though the model defaults `image.path: ''` and `PhotoField` supports "no photo" (monogram). Server now treats a blank library/upload path as intentionally photo-less; URL photos still must be `http(s)://`. Re-verified live: photo-less create → 201 ✓, retire → hidden from public menu ✓, owner `/menu/all` still lists it ✓, temp item purged from the DB afterwards
+- **Secrets sweep**: git tracks only `server/.env.example` (placeholders only) + `server/uploads/.gitkeep`; real `.env`, JWT secret, AES key and uploaded photos are all gitignored ✓
+- **`npm run test:crypto` (server's own script): 5/5 PASS** — 3 round-trips exact, tamper throws (auth-tag mismatch), wrong key throws
+
+### Demo data state (deliberate, kept)
+- Menu: the 12 seeded items, none retired · Orders: `AZ-0001` waiting · `AZ-0002` completed · **`AZ-0003` cancelled** (organic cancel-rule demo) · **`AZ-0004` completed by user claim** · account "Maria Santos" as a second customer so the owner dashboard looks lived-in
+
+### Verification
+- rehearsal as above · `vite build` ✓ (483 modules, Phase 6) · oxlint 0 errors · server boots clean after the fix
+
+### Next
+- User runs the rehearsal themselves (`npm run dev` → the cheat-sheet in README) — and when ready, supplies the **groupmate name + role** to fill the reserved dashed slot on `/demo` slide 15 (one-line change in `security-demo/components/SlideContent.jsx` TeamSlide).
+
 
 
 
