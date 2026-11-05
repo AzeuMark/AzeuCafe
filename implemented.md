@@ -84,7 +84,37 @@
 ### Files
 - src: `api/client.js`, `context/{Theme,Auth,Cart}Context.jsx`, `components/{Navbar,Footer,AuthModal,ProtectedRoute,Logo,PhaseStub}.jsx`, `App.jsx`, `pages/{Home,Menu,Cart,Checkout,MyOrders,OwnerMenu,OwnerOrders,Demo,NotFound}Page.jsx`
 
+- ~~Phase 3 — landing page~~ → **Phase 3 done, see entry below**
+
+---
+
+## [Phase 3 — Landing Page & Brand] — 2026-11-05
+
+**Status:** ✅ complete
+
+### Built
+- **Real photography, offline-proof:** fetched from Unsplash with fallback candidates and committed to the repo —
+  - `src/assets/landing-hero.jpg` — moody espresso-bar photo (first-choice ID `photo-1509042239860-f550ce710b93`, 853 KB)
+  - `src/assets/landing-interior.jpg` — cozy café interior (`photo-1521017432531-fbd92d768814`, 242 KB)
+- **`HomePage.jsx` rebuilt as the anti-slop editorial landing:**
+  - Full-bleed moody hero (real photo + espresso gradient overlay, cream Fraunces headline, staggered entrance)
+  - "How ordering works" — numbered editorial list (01/02/03), no card grids
+  - Story section on espresso — interior photo with offset caramel frame + **"A word on privacy"** block linking to `/demo` (AES-256-GCM explained in one breath)
+  - **Menu teaser pulling REAL items from the API** (`GET /api/menu`) with serif monogram fallback and peso prices
+  - Hours & location on a foam panel with the cash-at-counter reminder
+  - framer-motion reveals throughout (whileInView, once, staggered)
+- Custom favicon: espresso rounded square + cream cup mark (matches the Logo component)
+- `utils/format.js` — shared `peso()` formatter (en-PH)
+- `CREDITS.md` (root) — Unsplash sources + license note for the class report
+
+### Verification
+- `vite build` → ✓ (469 modules; hero 873 KB + interior 247 KB bundled as hashed assets)
+
+### Files
+- `client/src/pages/HomePage.jsx`, `client/src/assets/landing-{hero,interior}.jpg`, `client/public/favicon.svg`, `client/src/utils/format.js`, `CREDITS.md`
+
 ### Next
-- Phase 3 — landing page + custom favicon (anti-slop pass)
+- Phase 4 — ordering full loop: MenuPage, CartPage, CheckoutPage, MyOrdersPage + bundle the 12 menu item photos
+
 
 
