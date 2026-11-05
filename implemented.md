@@ -138,7 +138,48 @@
 - `client/public/menu/*.jpg` (12), `components/{MenuItemPhoto,StatusChip,MenuItemCard}.jsx`, `pages/{Menu,Cart,Checkout,MyOrders}Page.jsx`, `CREDITS.md`
 
 ### Next
-- Phase 5 — Owner pages: menu manager (3-way PhotoField + soft-retire) and the order dashboard
+- ~~Phase 5 — Owner pages~~ → **Phase 5 done, see entry below**
+
+---
+
+## [Phase 5 — Owner Pages] — 2026-11-05
+
+**Status:** ✅ complete
+
+### Built
+- **`PhotoField.jsx`** — the 3-way photo source picker used everywhere the Owner touches photos:
+  - **Library**: grid of the 12 bundled photos (`/menu/*.jpg`, offline-safe for the demo)
+  - **Upload**: file → `POST /api/menu/upload` multipart → multer stores under `/uploads/item-<ts>-<rand>.jpg` (5 MB, JPG/PNG/WebP)
+  - **From URL**: pasted link validated to `http(s)://` before applying
+  - Always emits `{ type, path }`; inline preview with monogram fallback + "Remove photo"; parse-free swap between modes
+- **`MenuItemForm.jsx`** — one form for create AND edit (`POST /menu` / `PATCH /menu/:id`): name, price (₱, numeric), category select, description, PhotoField; server re-validates every field
+- **`OwnerMenuPage.jsx`** rebuilt (replaces stub):
+  - Loads `GET /api/menu/all` (owner-only list INCLUDING retired items)
+  - Category-grouped rows with photo thumb, name/description, price, exact stored photo source caption
+  - **Retire** (soft — `DELETE /menu/:id` sets `retired:true`, order history stays intact) with confirm dialog, **Restore** (`PATCH {retired:false}`), "Show retired" toggle with retired count
+  - Inline new/edit form panel with framer-motion entrance
+- **`OwnerOrdersPage.jsx`** rebuilt (replaces stub):
+  - Loads `GET /api/orders`, **polls every 5s** (last-sync timestamp shown)
+  - Status filter tabs (All/Waiting/Processing/Ready/Completed/Cancelled) with live counts
+  - Cards show claim info **as the server decrypted it** (name · phone), placing account (name/email), barista note, items, total tagged "cash", full `waiting → …` history chain
+  - Action buttons mirror the server's `TRANSITIONS` matrix exactly: waiting → **Accept → Processing** / Cancel · processing → **Mark Ready** / Cancel (owner may; users may not) · ready → **Hand out → Completed** · terminal = no buttons
+  - Active orders highlighted with caramel border; terminal ones dimmed
+
+### Verified (live API smoke run, server on :5000)
+- Owner login ✓ → `/api/menu/all` returns all 12 items as `{ type, path }` images ✓
+- Create item ✓ → PATCH price + swap photo to uploaded file ✓ → soft retire ✓ → un-retire ✓
+- Multipart upload ✓ → `/uploads/item-….jpg` served ✓
+- `GET /api/orders` (owner) → decrypted contact + user name/email + history chains ✓
+- Unauthenticated `/api/menu/all` → **401** ✓
+- Test artifacts deleted afterwards (test item removed from DB, upload file deleted)
+- `vite build` ✓ (474 modules) · oxlint 0 errors (4 known benign warnings)
+
+### Files
+- `client/src/components/{PhotoField,MenuItemForm}.jsx`, `client/src/pages/{OwnerMenuPage,OwnerOrdersPage}.jsx`
+
+### Next
+- Phase 6 — security-demo slideshow: 16 slides, 3 acts, script drawer, CodeWindow with the real aescrypt.js, live EncryptPlayground
+
 
 
 
