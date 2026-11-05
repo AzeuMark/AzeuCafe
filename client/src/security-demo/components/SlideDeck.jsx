@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ACT_META, slides } from '../data/slides.js'
 import SlideContent from './SlideContent.jsx'
@@ -6,8 +6,9 @@ import PresenterNotes from './PresenterNotes.jsx'
 
 /**
  * SlideDeck — the engine of the security presentation.
- *  keyboard: ← → ↑ ↓ / Space / PageUp / PageDown navigate · Home / End jump · S toggles the script drawer
- *  pointer: swipe, clickable progress dots, prev/next
+ *  keyboard: ← → ↑ ↓ / Space / PageUp / PageDown navigate · Home / End jump ·
+ *            S toggles the script drawer · F toggles deck-only fullscreen
+ *  pointer: swipe, clickable progress dots, prev/next, fullscreen button
  * Every transition is direction-aware; the drawer is hidden by default.
  */
 
@@ -29,13 +30,46 @@ function CupMark() {
   )
 }
 
+function ExpandIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3" />
+    </svg>
+  )
+}
+
+function CompressIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M8 3v3a2 2 0 0 1-2 2H3M16 3v3a2 2 0 0 0 2 2h3M8 21v-3a2 2 0 0 0-2-2H3M16 21v-3a2 2 0 0 1 2-2h3" />
+    </svg>
+  )
+}
+
 export default function SlideDeck() {
   const [index, setIndex] = useState(0)
   const [dir, setDir] = useState(0)
   const [notesOpen, setNotesOpen] = useState(false)
+  const deckRef = useRef(null)
+  const [fullscreen, setFullscreen] = useState(false)
 
   const total = slides.length
   const slide = slides[index]
+
+  /* deck-only fullscreen: the slideshow becomes the screen, nothing else */
+  useEffect(() => {
+    const onFullscreenChange = () => setFullscreen(Boolean(document.fullscreenElement))
+    document.addEventListener('fullscreenchange', onFullscreenChange)
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange)
+  }, [])
+
+  const toggleFullscreen = useCallback(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {})
+    } else if (deckRef.current?.requestFullscreen) {
+      deckRef.current.requestFullscreen().catch(() => {})
+    }
+  }, [])
 
   const goTo = useCallback(
     (next, direction = 1) => {
@@ -71,16 +105,22 @@ export default function SlideDeck() {
       } else if (event.key.toLowerCase() === 's') {
         event.preventDefault()
         setNotesOpen((open) => !open)
+      } else if (event.key.toLowerCase() === 'f') {
+        event.preventDefault()
+        toggleFullscreen()
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [next, prev, goTo, total])
+  }, [next, prev, goTo, total, toggleFullscreen])
 
   const act = slide.act ? ACT_META[slide.act] : null
 
   return (
-    <div className="flex min-h-dvh flex-col bg-latte text-bean dark:bg-espresso dark:text-milk">
+    <div
+      ref={deckRef}
+      className="flex min-h-dvh flex-col bg-latte text-bean dark:bg-espresso dark:text-milk"
+    >
       {/* top bar */}
       <header className="mx-auto flex w-full max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
         <span className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.25em] text-caramel-deep dark:text-caramel">
@@ -102,6 +142,19 @@ export default function SlideDeck() {
         {!act && (
           <span className="ml-auto font-mono text-xs opacity-60">{slide.kicker}</span>
         )}
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          title={fullscreen ? 'Exit fullscreen (F)' : 'Present fullscreen (F)'}
+          aria-label={fullscreen ? 'Exit fullscreen presentation' : 'Present the slideshow fullscreen'}
+          className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border transition ${
+            fullscreen
+              ? 'border-caramel bg-caramel text-espresso'
+              : 'border-espresso/15 hover:border-caramel dark:border-milk/15'
+          }`}
+        >
+          {fullscreen ? <CompressIcon /> : <ExpandIcon />}
+        </button>
       </header>
 
       {/* slide canvas */}

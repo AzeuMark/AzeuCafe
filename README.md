@@ -68,7 +68,7 @@ Crypto self-check: `cd server && npm run test:crypto` (encrypt/decrypt/tamper ro
 |---|---|
 | Café site | http://localhost:5173 — landing → **Menu** → cart → checkout (`AZ-000X` code) → **My Orders** |
 | Owner dashboards | **Orders** `/owner/orders` (accept/mark-ready/hand out, 5 s polling) · **Manage** `/owner/menu` (3-way PhotoField, soft-retire + restore) |
-| The presentation | http://localhost:5173/demo — arrows / Space navigate · Home/End jump · **S = speaker script drawer** (hidden by default) |
+| The presentation | http://localhost:5173/demo — arrows / Space navigate · Home/End jump · **S = speaker script drawer** (hidden by default) · **⤢ button or F = deck-only fullscreen** |
 | Theme | Sun/moon button or **T** — light-first, applies site-wide incl. the deck |
 | Playground magic | `/demo` slide 14: type a name → **Encrypt** → **Decrypt** round-trip → **Corrupt 1 character** → decrypt now refuses with the GCM tamper error |
 | Claim a code | Owner: Accept → Processing → Mark Ready; customer gets the pickup banner + "I've got it" button |

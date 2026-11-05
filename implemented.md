@@ -244,6 +244,7 @@
 - `vite.config.js`: added `server.allowedHosts: ['.trycloudflare.com']` — Vite ≥6 otherwise blocks rewritten Host headers with 403
 - Verified **through the public HTTPS URL**: SPA (`/`, `/demo`) → 200 · `GET /api/menu` → 12 items ✓ · bundled photos/favicon → 200 · `demo-encrypt` → real `v1.…` payload + **decrypt round-trip returned the original text** ✓ · **owner login → JWT httpOnly cookie over HTTPS → `/api/orders` with decrypted contacts (4 orders listed)** ✓
 - Behavior notes: quick-tunnel URLs are random and session-scoped (dies with the processes); documented in README "Run it online" incl. the named-tunnel upgrade path for a permanent URL
+- **Deck-only fullscreen added**: ⤢ button (deck top bar) or **F** key — Fullscreen API applied to the deck root element only, so presenting hides browser/site chrome and shows the slideshow exclusively (slides, dots, drawer all included; Esc exits); `fullscreenchange` listener keeps the button state in sync with Esc
 
 
 
