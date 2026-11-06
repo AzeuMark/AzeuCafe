@@ -246,6 +246,49 @@
 - Behavior notes: quick-tunnel URLs are random and session-scoped (dies with the processes); documented in README "Run it online" incl. the named-tunnel upgrade path for a permanent URL
 - **Deck-only fullscreen added**: ⤢ button (deck top bar) or **F** key — Fullscreen API applied to the deck root element only, so presenting hides browser/site chrome and shows the slideshow exclusively (slides, dots, drawer all included; Esc exits); `fullscreenchange` listener keeps the button state in sync with Esc
 
+---
+
+## Addendum [Presentation rebuilt — user-facing product talk] — 2026-11-06
+
+**Status:** ✅ complete (commit `c2eadbe`)
+
+The `/demo` slideshow was rebuilt from an engineering security lecture into a
+plain-language product presentation: how to USE AzeuCafe as a customer and as
+the owner, and HOW YOUR DATA IS PROTECTED. Nothing about how the website is
+built is on screen anymore — no source-code windows, no repo/plan/stack talk.
+
+### Done
+- `data/slides.js` — full rewrite: 16 slides / **2 acts**.
+  - **Act 1 · "How to use it"** (blue): what AzeuCafe is (two sides of one counter, cash rule) · create your account · browse the menu & cart · checkout & claim code · pay cash at the counter · tracking + the five status rules · owner menu room · owner live queue.
+  - **Act 2 · "How your data is protected"** (amber): only-what-we-need collection rule · name & phone locked in a vault · LIVE encrypt/decrypt/corruption playground · passwords kept as unreadable fingerprints · who-sees-what table.
+  - Every slide carries a full spoken script (PresenterNotes drawer, `S`), written in plain audience language.
+- `SlideContent.jsx` — full visual rewrite to match: two-sides intro, sign-up mock, photo menu cards, claim-code card, cash steps, status-chip table, owner queue table, keeps-data table, vault + `LockSketch`, playground, password cards, who-sees table, team slide with a **reserved dashed card** for the second builder, thanks recap.
+- `CodeWindow.jsx` **deleted** — the deck shows screens, not source. The `?raw`
+  import trick retired: `fs: { allow: ['..'] }` removed from `vite.config.js`.
+- Playground de-jargonized: labels now say "scrambled text"; the `algorithm` /
+  `file` fields (which rendered the `server/src/utils/aescrypt.js` path on
+  screen!) are gone — `demo-encrypt` now returns `{ cipher }` only; the strip
+  tamper note and decrypt-refusal message are plain words now.
+- `SlideDeck.jsx` — top-bar label → "How it works · why your data is safe".
+
+### Files touched
+`client/src/security-demo/data/slides.js` (rewrite) ·
+`client/src/security-demo/components/SlideContent.jsx` (rewrite) ·
+`EncryptPlayground.jsx` (copy + meta removal) ·
+`SlideDeck.jsx` (top-bar label) ·
+`CodeWindow.jsx` (deleted) ·
+`client/vite.config.js` (fs.allow removed) ·
+`server/src/controllers/security.controller.js` (response trimmed, plain
+tamper message) · `README.md` (cheat-sheet: 2 acts, playground on slide 12,
+project map without CodeWindow)
+
+### Verification
+- oxlint: 0 errors (pre-existing fast-refresh warnings unchanged) ✓
+- `vite build` → 481 modules ✓ (again after the `vite.config.js` trim)
+- `node --check` on the controller ✓
+- to-do: groupmate's name + role → team slide 15 dashed card (one-line change)
+
+
 
 
 
