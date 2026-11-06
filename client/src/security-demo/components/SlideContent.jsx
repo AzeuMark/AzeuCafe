@@ -52,7 +52,7 @@ function TitleSlide({ slide }) {
       </motion.div>
 
       <motion.p {...rise(0.75)} className="mt-10 font-mono text-[11px] opacity-50">
-        16 slides · 2 acts ≈ 10 minutes · speaker script hidden (press S)
+        16 slides · 2 acts ≈ 6 minutes · speaker script hidden (press S)
       </motion.p>
     </div>
   )
@@ -614,7 +614,7 @@ function ThanksSlide() {
     <div className="flex min-h-[55vh] flex-col items-center justify-center text-center">
       <motion.h2 {...rise()} className="font-display text-5xl sm:text-6xl">Thank you.</motion.h2>
       <motion.p {...rise(0.12)} className="mt-3 font-display text-2xl text-caramel-deep dark:text-caramel">
-        Questions? — the counter is open.
+        Order ahead · pay cash · your data stays yours.
       </motion.p>
 
       <motion.ul {...rise(0.28)} className="mt-7 max-w-2xl space-y-2 text-left text-sm leading-relaxed">

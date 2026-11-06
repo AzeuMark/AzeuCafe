@@ -287,6 +287,14 @@ project map without CodeWindow)
 - `vite build` → 481 modules ✓ (again after the `vite.config.js` trim)
 - `node --check` on the controller ✓
 - to-do: groupmate's name + role → team slide 15 dashed card (one-line change)
+- Follow-up (2026-11-06, video submission): narration trimmed to **≈860 words ≈ 5½ min**
+  at presentation pace (measured by a word-count script) — every rhetorical question
+  removed (scripts + titles now purely explanatory), "try it with me" audience talk
+  reworded for recording, closer retitle → **"Thank you for watching"** with sub-line
+  "Order ahead · pay cash · your data stays yours". Act 2 assurances all retained
+  explicitly: keep-only-what-is-needed · zero card data (cash) · vault + key-only-café ·
+  tamper refusal (never returns garbage) · one-way password fingerprint · who-sees-what ·
+  claim-code-not-life-story.
 
 
 
