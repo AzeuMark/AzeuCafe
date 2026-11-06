@@ -1,4 +1,4 @@
-import { encrypt, decrypt, AESCRYPT_ALGORITHM } from '../utils/aescrypt.js'
+import { encrypt, decrypt } from '../utils/aescrypt.js'
 
 const KEY = () => process.env.AES_KEY
 
@@ -20,8 +20,6 @@ export function demoEncrypt(req, res, next) {
     }
     res.json({
       cipher: encrypt(text, KEY()),
-      algorithm: AESCRYPT_ALGORITHM,
-      file: 'server/src/utils/aescrypt.js',
     })
   } catch (err) {
     next(err)
@@ -36,7 +34,7 @@ export function demoDecrypt(req, res, next) {
       res.json({ text: decrypt(cipher, KEY()) })
     } catch {
       res.status(400).json({
-        message: 'Decryption failed — wrong key or the ciphertext was tampered with.',
+        message: 'Decryption refused — the scrambled text is corrupted or tampered with, so nothing was returned.',
       })
     }
   } catch (err) {

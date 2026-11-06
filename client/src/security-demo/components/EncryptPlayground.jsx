@@ -4,11 +4,12 @@ import { post } from '../../api/client.js'
 import CipherMorph from './CipherMorph.jsx'
 
 /**
- * EncryptPlayground — the Act-3 finale. It calls the REAL server crypto:
- *   POST /api/security/demo-encrypt  { text }   → { cipher, algorithm, file }
+ * EncryptPlayground — the live demo on the "watch it work" slide. It calls
+ * the REAL server crypto so the audience sees the system's actual protection:
+ *   POST /api/security/demo-encrypt  { text }   → { cipher }
  *   POST /api/security/demo-decrypt  { cipher } → { text }
- * plus a one-character tamper button that proves AES-256-GCM authentication
- * live: corrupt the ciphertext → decryption THROWS and says so.
+ * plus a one-character tamper button: corrupt the scrambled text and
+ * decryption refuses — the server never guesses or returns garbage.
  */
 
 const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
@@ -40,7 +41,6 @@ export default function EncryptPlayground() {
   const [plain, setPlain] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState('') // '' | 'encrypt' | 'decrypt'
-  const [meta, setMeta] = useState(null)
 
   async function encrypt() {
     setBusy('encrypt')
@@ -51,7 +51,6 @@ export default function EncryptPlayground() {
       const data = await post('/security/demo-encrypt', { text })
       setCipher(data.cipher)
       setShownCipher(data.cipher)
-      setMeta(data)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -87,7 +86,6 @@ export default function EncryptPlayground() {
     setPlain('')
     setError('')
     setTampered(false)
-    setMeta(null)
   }
 
   return (
@@ -119,15 +117,10 @@ export default function EncryptPlayground() {
         className="mt-4 rounded-xl border border-espresso/15 bg-white/70 p-4 dark:border-milk/15 dark:bg-espresso/60"
       >
         <div className="flex items-center justify-between gap-2 text-[10px] font-bold uppercase tracking-widest opacity-55">
-          <span>{tampered ? 'Ciphertext · TAMPERED on purpose' : 'Ciphertext (from the server)'}</span>
-          {cipher && meta && (
-            <span className="font-mono normal-case tracking-normal">
-              {meta.algorithm} · {meta.file}
-            </span>
-          )}
+          <span>{tampered ? 'Scrambled text · corrupted on purpose' : 'Scrambled text · straight from the server'}</span>
         </div>
         <p className="mt-2 min-h-12 text-sm leading-relaxed">
-          <CipherMorph value={shownCipher} tone="cipher" placeholder="Press Encrypt — a real AES-256-GCM payload appears here…" />
+          <CipherMorph value={shownCipher} tone="cipher" placeholder="Press Encrypt — the scrambled version appears here…" />
         </p>
         {tampered && (
           <p className="mt-1 text-[11px] text-status-cancelled">
@@ -166,14 +159,14 @@ export default function EncryptPlayground() {
           className="mt-4 rounded-xl border border-status-ready/40 bg-status-ready/10 px-4 py-3"
         >
           <p className="text-[10px] font-bold uppercase tracking-widest text-status-ready">
-            Decrypted at the server — GCM says the payload is intact
+            Decrypted at the server — the scrambled text arrived intact
           </p>
           <p className="mt-1 text-sm">
             <CipherMorph value={plain} tone="plain" />
           </p>
           {tampered && (
             <p className="mt-1 text-[11px] opacity-60">
-              (This round-trip used an UNTAMPERED ciphertext — the corrupted one is refused.)
+              (This round used the clean text — the corrupted one was refused above.)
             </p>
           )}
         </motion.div>

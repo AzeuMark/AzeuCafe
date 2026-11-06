@@ -20,7 +20,7 @@ running the system's *actual* crypto code.
 |---|---|
 | **Customer** (`user`) | Register/login · browse the menu · fill a cart · check out → **`AZ-000X` claim code** + "PAY CASH AT THE COUNTER" · track orders · cancel **only while Waiting** · confirm pickup when Ready |
 | **Owner** (`owner`) | Menu manager (add/edit/**soft-retire** + 3-way photo field: bundled library / upload / URL) · live orders dashboard (5 s polling) with the server-enforced transition buttons (Accept → Processing, Mark Ready, Hand out → Completed, Cancel) |
-| **The class** | `/demo` — the security presentation: 3 acts, full speaker script in a hidden drawer, the real `aescrypt.js` on screen, live AES-256-GCM playground |
+| **The class** | `/demo` — 16 slides in 2 acts: how customers & the owner use the system, why your data is safe — full speaker script in a hidden drawer, live encrypt/decrypt/tamper playground |
 
 ### The security design (per data type — the heart of the project)
 
@@ -70,7 +70,7 @@ Crypto self-check: `cd server && npm run test:crypto` (encrypt/decrypt/tamper ro
 | Owner dashboards | **Orders** `/owner/orders` (accept/mark-ready/hand out, 5 s polling) · **Manage** `/owner/menu` (3-way PhotoField, soft-retire + restore) |
 | The presentation | http://localhost:5173/demo — arrows / Space navigate · Home/End jump · **S = speaker script drawer** (hidden by default) · **⤢ button or F = deck-only fullscreen** |
 | Theme | Sun/moon button or **T** — light-first, applies site-wide incl. the deck |
-| Playground magic | `/demo` slide 14: type a name → **Encrypt** → **Decrypt** round-trip → **Corrupt 1 character** → decrypt now refuses with the GCM tamper error |
+| Playground magic | `/demo` slide 12: type a name → **Encrypt** → **Decrypt** round-trip → **Corrupt 1 character** → decrypt now refuses instead of returning garbage |
 | Claim a code | Owner: Accept → Processing → Mark Ready; customer gets the pickup banner + "I've got it" button |
 
 ---
@@ -104,7 +104,7 @@ cloudflared tunnel --url http://localhost:5173   # prints a public URL
 │   │   ├── context/            Theme (light-first, T) · Auth (modal) · Cart (localStorage)
 │   │   ├── pages/              Home · Menu · Cart · Checkout · MyOrders · OwnerMenu · OwnerOrders
 │   │   └── security-demo/      ★ the 16-slide deck (slides data, SlideDeck, PresenterNotes,
-│   │                             CodeWindow ← ?raw import of the real aescrypt.js, playground)
+│   │                             self-drawing lock, live encrypt/decrypt/tamper playground)
 ├── server/
 │   ├── src/
 │   │   ├── utils/aescrypt.js   ★ THE security file — encrypt/decrypt/safeDecrypt

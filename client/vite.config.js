@@ -10,8 +10,6 @@ export default defineConfig({
       '/api': 'http://localhost:5000',
       '/uploads': 'http://localhost:5000',
     },
-    // The security slideshow imports the REAL server AESCrypt file via ?raw
-    fs: { allow: ['..'] },
     // Cloudflare quick tunnels send a random *.trycloudflare.com Host header;
     // scoped suffix allow so the demo tunnel can serve the dev app.
     allowedHosts: ['.trycloudflare.com'],

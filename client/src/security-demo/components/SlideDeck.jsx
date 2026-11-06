@@ -129,7 +129,7 @@ export default function SlideDeck() {
         </span>
         <span className="hidden h-4 w-px bg-espresso/15 sm:block dark:bg-milk/15" />
         <span className="hidden truncate font-mono text-xs opacity-60 sm:block">
-          Security presentation
+          How it works · why your data is safe
         </span>
         {act && (
           <span

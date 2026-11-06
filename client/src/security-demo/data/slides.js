@@ -1,15 +1,18 @@
 /**
- * The 16-slide security presentation — slide definitions + the FULL SPOKEN
+ * The 16-slide AzeuCafe presentation — slide definitions + the FULL SPOKEN
  * SCRIPT under each one. Scripts are revealed only in the PresenterNotes
- * drawer (button bottom-right, or press S) so the audience never sees them.
+ * drawer (toggle button bottom-right, or press S) so the audience never
+ * sees them.
+ *
+ * Tone: a HOW-TO-USE + WHY-YOUR-DATA-IS-SAFE talk for a general audience.
+ * No engineering or implementation talk — just the product experience.
  *
  * Slide visuals live in ../SlideContent.jsx keyed by `content`.
  */
 
 export const ACT_META = {
-  usage: { label: 'Act 1 · Usage', color: '#4E86D8' },
-  security: { label: 'Act 2 · Security', color: '#E5A13C' },
-  aescrypt: { label: 'Act 3 · AESCrypt', color: '#3D8B5F' },
+  usage: { label: 'How to use it', color: '#4E86D8' },
+  protected: { label: 'How your data is protected', color: '#E5A13C' },
 }
 
 export const slides = [
@@ -19,140 +22,140 @@ export const slides = [
     kicker: 'AzeuMark presents',
     title: 'AzeuCafe',
     subtitle:
-      'A cash-at-counter café ordering system with AES-256-GCM encryption at its core — and every design choice explained.',
+      'Order ahead from your phone, pay cash at the counter — and rest easy, because your personal data is protected the whole way.',
     content: 'title',
     script:
-      'Good day, everyone. My name is Uelmark G. Valdehueza — online, I go by AzeuMark — and what you are about to see is AzeuCafe, my capstone project for this subject. AzeuCafe is a full café ordering system: a customer browses the menu on their phone, places an order, shows an order code at the counter, and pays in cash. Behind that simple surface runs an Express API and a MongoDB database, and running through all of it, a single security idea: every piece of personal data that touches that database is encrypted with AES-256-GCM — real cryptography, not a checkbox. This presentation has three acts. Act 1 is a quick walkthrough of how the system is used. Act 2 is an honest look at what we protect and why. Act 3 goes deep into the actual security file — the AESCrypt module — where I will show you the real code, running live, decrypting your own words. That is roughly ten to twelve minutes. Let us start the espresso machine.',
+      'Hi everyone. My name is Uelmark G. Valdehueza — online I go by AzeuMark — and today I will walk you through AzeuCafe. In the first part of this talk, I will show you how to use the system as a customer, step by step: creating your account, browsing the menu, placing an order, and claiming it at the counter. Then I will show you the other side of the counter: how the café itself runs your order from behind the scenes. In the second part, I will answer a question that matters to every one of us: what happens to your personal information once you type it in — your name, your phone number, your claim details — and exactly how the system keeps it safe. By the end you will know two things: how to use AzeuCafe, and why you can trust it with your data. Let us get started.',
   },
   {
     id: 2,
     act: 'usage',
-    kicker: 'Act 1 · Usage',
-    title: 'What is AzeuCafe?',
-    subtitle: 'Two roles. One golden rule: pay cash at the counter.',
-    content: 'roles',
+    kicker: 'How to use it',
+    title: 'So, what is AzeuCafe?',
+    subtitle: 'Two sides of one counter: the customer screen, and the café screen. One golden rule: cash at the counter.',
+    content: 'intro',
     script:
-      'First, the shape of the system. There are exactly two roles. A user is a customer: they register, they browse the menu, they order, they claim. The owner is the café itself: they manage the menu and run the order queue from a separate dashboard. Nothing in between — no middlemen, no admin panel needed. And there is one golden rule the whole design is built around: payment is CASH at the counter. Deliberately, there is no payment gateway, no card numbers, no e-wallets anywhere in this project. That is both honest scope for a school build and a security choice — the system never touches money, so the most dangerous class of web attacks, payment fraud, is simply out of scope by design. The system tracks, prepares, and timestamps the order; your wallet stays in your pocket until the cup does. Those two roles and that rule are the frame for everything you will see next.',
+      'AzeuCafe does one simple thing: it removes the line from your coffee. You open the site — on your phone or your laptop — you look at the menu of the day with photos and real peso prices, you place your order, and the system hands you a claim code, like a stub at the movies. You show that code at the cashier, pay in cash, and take your seat while the coffee is made. There are two sides to it. If you are a customer, everything you need lives on one screen: the menu, your cart, checkout, and your order tracker. If you are the café, there is a second screen — the owner side — where the queue lives: new orders come in, get accepted, get made, and get handed out. And one golden rule holds the whole thing together: payment is CASH at the counter. No cards, no e-wallets, no online payment of any kind plays any part in this system. Your money stays in your pocket until you hold your cup.',
   },
   {
     id: 3,
     act: 'usage',
-    kicker: 'Act 1 · Usage · User',
-    title: 'Register & login',
-    subtitle: 'Passwords are hashed with bcrypt. Sessions ride an httpOnly JWT cookie.',
-    content: 'auth',
+    kicker: 'How to use it · Getting started',
+    title: 'Create your account',
+    subtitle: 'One quick sign-up — then your order history follows you everywhere.',
+    content: 'start',
     script:
-      'Registration and login happen in one modal that opens over any page. Two trust boundaries are already enforced here, and both are enforced server-side. First: the registration form can only ever create the role "user". You could open dev tools and edit the form all day — the server ignores what the client claims and assigns the role itself. Nobody can self-promote to owner. Second: the password is never stored as a password. On the way in, bcrypt hashes it with a per-user salt; the original is mathematically destroyed. When you log in, the hash is compared, and if it matches, the server answers with a JSON web token set as an httpOnly cookie. httpOnly means even the page JavaScript cannot read that token — cross-site scripts get nothing. Sessions live in the browser cookie jar, not in localStorage where an XSS attack would go shopping.',
+      'First time here? Tap Log in, then Sign up. The form asks for three things — your name, your email, and a password of your choice — and that is the whole ceremony. From that moment, everything you order belongs to your account: your history is kept, and if you come back tomorrow on a different phone or laptop, you just log in and everything is still where you left it. Returning regulars simply log in and start ordering. One thing is worth knowing right now, because we will return to it later: the password you type is scrambled beyond recognition before it is kept anywhere. The system will later use it to check that it is really you — but nobody, not even the café, can take that scrambled version and turn it back into your password. Your account is your key, and it is never the café business to read it.',
   },
   {
     id: 4,
     act: 'usage',
-    kicker: 'Act 1 · Usage · User',
-    title: 'Browse the menu & fill the cart',
-    subtitle: 'Photos, prices, quantities — and the browser still gets to send nothing but ids.',
+    kicker: 'How to use it · Customer',
+    title: 'Browse the menu, fill your cart',
+    subtitle: 'Photos, peso prices, and a cart that behaves like a real tray.',
     content: 'menu',
     script:
-      'The public menu is served by one endpoint, grouped into four categories: espresso drinks, iced drinks, pastries, and snacks. Every item has a photo, a description, and a peso price — the same data the counter sees. You tap items into the cart, and a stepper adjusts quantities up to fifty. Here is the part I want you to notice, because it is the quiet security backbone of the entire ordering flow: the browser is allowed to send ONLY item ids and quantities. Not prices, not names, not totals. It does not matter how I tamper with the page or with a copy of the request — the server looks each id up in its own menu collection, takes the price from its own database, and computes the total there. The client proposes what it wants; the server decides what it costs. Hold that thought for two more slides.',
+      'The menu is the fun part. Everything is grouped the way you would find it at the counter — espresso drinks, iced drinks, pastries, and snacks — each item with a real photo, a short description, and its price in pesos. Found something? One tap and it drops into your cart, like putting a pastry on your tray; tap the basket icon in the top bar any time to see what you have collected. In the cart you can adjust quantities up or down, and remove the croissant you suddenly regret: this is coffee, not a contract — change your mind as often as you like. And if you must close the site — class starts, emails arrive — your cart keeps its contents for later, so your half-built snack run survives. When everything looks right, proceed to checkout.',
   },
   {
     id: 5,
     act: 'usage',
-    kicker: 'Act 1 · Usage · User',
-    title: 'Checkout → the claim code',
-    subtitle: 'Place the order, read the code at the counter, pay in cash.',
+    kicker: 'How to use it · Customer',
+    title: 'Place the order, get your claim code',
+    subtitle: 'One screen: who is claiming, any note for the barista — then a big AZ-code appears.',
     content: 'checkout',
     script:
-      'Checkout is one screen. The customer confirms their claim details — name and phone — and may add a note for the barista, like "less sugar please". The moment the order is placed, the server does three things. One: it re-prices every line item from its own menu collection, so the total is computed server-side, exactly as promised on the last slide. Two: it packs the freshly computed items into an immutable snapshot on the order — names, prices, photos — so if the owner later edits the menu or changes a price, receipts that already exist never change. Three: it encrypts the contact name and phone number with AES-256-GCM before the order row is even saved. The customer then gets their claim code — like AZ-0001 — and a big panel that says PAY CASH AT THE COUNTER. They read the code to the cashier; the cashier punches it in on the owner dashboard, and that order goes waiting → processing → ready → completed — the cashier is the engine of that state machine.',
+      'Checkout asks for two things, and only two. First: the NAME of the person who will claim the order — you, or a friend picking up for you. Second: a phone number, in case the café needs to reach you about the order. Then there is a small note box for the barista: less sugar, oat milk, extra hot — a courtesy the counter reads every time. Check the summary on the side, and when the total looks right, tap Place order. A claim code appears, something like AZ-0001, big and bold on the screen. That code is your receipt and your ticket at the same time: proof that you ordered, in a shape you can read out at the counter. Notice, too, that the total shown here is the total you pay — the price was already agreed between you and the café, no surprises waiting for you at the cash register.',
   },
   {
     id: 6,
     act: 'usage',
-    kicker: 'Act 1 · Usage · User',
-    title: 'Order tracking & the rules',
-    subtitle: 'Five statuses. The cancel rule depends on who you are and when you ask.',
-    content: 'statuses',
+    kicker: 'How to use it · Customer',
+    title: 'Pay cash at the counter',
+    subtitle: 'Read the code. Pay in pesos. That is the entire payment process.',
+    content: 'cash',
     script:
-      'Every order lives in exactly one of five statuses: waiting, processing, ready, completed — or cancelled. So what CAN the user do? In waiting, they may cancel — free, instant, the café has not yet accepted it. In processing, they may NOT cancel. This is a deliberate rule, and yes, it is also just how cafés work in real life: the milk is already steaming. If processing still matters, you talk to the owner — and on this system, the owner therefore CAN cancel in processing, because only the café knows whether the drink was already made or whether giving a refund is worth it. In ready, the user again has a button: "got it — mark completed", claiming on their end, so the dashboard stays accurate. Every one of these rules is enforced by a transitions table on the server — you will see that exact table on the owner dashboard in a moment.',
+      'Here is how the payment moment actually goes. You walk to the counter and read your claim code: AZ-0001. The cashier finds your order already listed on their screen — the items, the total, the note — you hand over your pesos, done. The system never touches your money: there is no card number stored in AzeuCafe, no e-wallet, no saved payment method — nothing exists that could ever be charged. You keep your money in your pocket until you hold your cup. And because payment is cash, there is nothing ABOUT your money to protect either: no transaction trails, no card fingerprints, no billing anything. Using the system costs you nothing extra: no fees, no cut, no charges — you pay only for the coffee, and only in cash.',
   },
   {
     id: 7,
     act: 'usage',
-    kicker: 'Act 1 · Usage · Owner',
-    title: 'Menu management',
-    subtitle: 'Add, edit, or soft-retire. Three ways to give an item a photo.',
-    content: 'ownerMenu',
+    kicker: 'How to use it · Customer',
+    title: 'Track your order — and know the rules',
+    subtitle: 'Five statuses tell you exactly what is happening. Cancel freely before the café starts making it.',
+    content: 'track',
     script:
-      'Now the owner side. On the menu manager, the owner can add new items, edit existing ones — name, price, category, description — and retire items. Retire, not delete: the delete button actually only sets a flag called "retired". Why? Because of old orders. Every order has its own snapshot — an order that sold a Butter Croissant on Monday still needs to know what a Butter Croissant was and what it cost, forever. So retired items vanish from the public menu but stay physically in the database, and can be restored with one click. For photos, the owner picks a source three ways: bundled library — twelve photos shipped with the app, so the demo works with zero network; file upload — multer receives the photo on the server with a type and size check; or paste a URL. All three feed one photo field, the server validates the result, and only the owner role can touch any of this.',
+      'On your Orders page, an order walks through five statuses, and each one tells you exactly what is happening at the counter. Waiting — the café has not accepted it yet; you can cancel for free with one tap and your money stays yours. Processing — the café has accepted and started making it; an order can no longer be cancelled in this stage, and if life changed in the meantime you simply talk to the person at the counter — the café itself can cancel it for you there and then. Ready — your order is done and waiting: tap the button that appears, "mark completed", and the loop closes. Completed — claimed, paid, done. Cancelled — only ever shown when an order was agreed to be cancelled, either by you while Waiting or by the café itself. Those are the rules, and they exist to protect both sides: the café cannot lose work it already started, and you never chase an order you already gave up on.',
   },
   {
     id: 8,
     act: 'usage',
-    kicker: 'Act 1 · Usage · Owner',
-    title: 'The orders dashboard',
-    subtitle: 'One queue, five-second polling, and the rules table you already saw.',
-    content: 'ownerOrders',
+    kicker: 'How to use it · Owner',
+    title: 'Behind the counter: the menu room',
+    subtitle: 'Add items, edit anything, and retire what is sold out — old receipts stay true.',
+    content: 'ownerMenu',
     script:
-      'On the other screen, the owner sees the whole queue. Active orders are highlighted; finished ones dim out. It polls every five seconds, so a customer can be standing at the counter while the owner watches the order appear. Each card shows the claim code, the items and totals, the barista note — and the customer contact name and phone, displayed in plaintext. That is not a leak: that is the last step of the encryption journey. The data is encrypted at rest in MongoDB; when the OWNER — an authenticated user with the owner role, through the owner API — asks for it, the server decrypts it for them, because the owner must call that customer. Authorization decides who may read secrets, not whether they exist. The action buttons are the transitions table made physical: Accept moves waiting to processing; Mark Ready moves processing to ready; Hand Out completes it; Cancel, with a confirmation, works while the order is still active. And just like the user side, all of these transitions are validated AGAIN on the server before anything changes.',
+      'Let us spend two minutes on the other side of the counter — knowing it exists makes the whole picture real. When the café logs in, its menu room opens. Adding an item is a small form: name, price, a short description, and a picture — and for the picture the café chooses how: pick one from a ready-made gallery of photos, upload its own image from its computer, or paste a link. Any item can be edited at any time: adjust a price, sharpen a description, swap a photo. And when something is sold out, the café does not deactivate it — it RETIRES it. That is a small word with a big meaning: retired items disappear from the public menu board, but every order placed while an item was available still shows exactly what it bought and at what price — history stays honest. If the croissant returns tomorrow, one click brings it back.',
   },
   {
     id: 9,
-    act: 'security',
-    kicker: 'Act 2 · Security',
-    title: 'What we protect & why',
-    subtitle: 'Think like an attacker: the database is the treasure chest.',
-    content: 'protects',
+    act: 'usage',
+    kicker: 'How to use it · Owner',
+    title: 'Behind the counter: the live queue',
+    subtitle: 'Orders land on the owner screen within seconds — what to make, whom to call, at a glance.',
+    content: 'queue',
     script:
-      'Now act two. Let us think like an attacker with a list of questions. If someone at this school lost the MongoDB data — a dump file, a copy of the disk — what would they actually hold? That is the whole threat model in one sentence. And here is the honest answer, column by column. The password column does not scare me: it is bcrypt-hashed — irreversible, salted, deliberately slow to brute force. The email column is plaintext: a choice we will defend in a minute. But the names and the phone numbers — the actual personal data of real users — would be sitting there as ciphertext: strings like "v1.x9Kq..." that are nothing without the key. Same for every order claim snapshot, every customer call-back number. So the crown jewels are protected, the threatening-but-less-sensitive data is guarded differently, and the harmless data is left alone. Real design means choosing per data type — not one giant padlock over everything.',
+      'And here is the heartbeat of the café: the live queue that updates every few seconds. New orders pop in highlighted. Each card shows exactly what to make, the quantity, the claim details as the customer typed them — the name to call, the phone to ring — and that little barista note, like "less sugar please." From there, the screen only ever shows the buttons that make sense at that moment: Accept — the café takes charge, your order is now Processing on your phone too. Ready — the drink is done and sitting at the counter, and the customer sees the banner immediately. Hand out — code verified, order claimed, loop closed. And Cancel — for the moments when real life intervenes: a machine stops, a customer asks nicely. The café can call the number on the card and settle it like human beings. Every one of these changes appears on the customer side automatically, no refresh needed, no phone calls back.',
   },
   {
     id: 10,
-    act: 'security',
-    kicker: 'Act 2 · Security',
-    title: 'Encrypted vs hashed vs plaintext',
-    subtitle: 'Three kinds of data, three different tools — and each one for a reason.',
-    content: 'table',
+    act: 'protected',
+    kicker: 'How your data is protected',
+    title: 'What we keep — and why',
+    subtitle: 'Only what the café actually needs. Nothing else is collected, period.',
+    content: 'protects',
     script:
-      'This table is the heart of the security design — the question every system must answer per column: can we get the data back? For names and phone numbers, YES — we must. The tech is AES-256-GCM, a symmetric cipher: encrypt with the server key, decrypt with the same server key. It is secure and reversible, with the key as the single secret. For PASSWORDS, the answer must be NO — never, ever reversible, even by us. That is bcrypt: a one-way hash plus a unique salt per user, deliberately slow so that guessing a billion candidates takes years. Compare that to just bulking AES-256 and you see the misunderstanding: we do NOT encrypt passwords, because whoever steals the key would then own every password in the world. And EMAIL is plaintext by choice: login needs exact-match lookups, uniqueness, and indexing, and an email is the one piece of these three you use publicly every day. Every column here is a documented, defensible decision — the code agrees with the slides.',
+      'And now the part I promised we would come back to: your data. Real protection starts before any technology, with one simple question: should we even KEEP this? AzeuCafe collects only what it truly needs. Your NAME — so the right cup goes to the right hands at the counter. Your PHONE — so the café can reach you if there is a question about your order. Your NOTE — so your coffee comes out the way you asked for it. Your EMAIL — that is how you log back in tomorrow, nothing more. Your PASSWORD — needed for the login itself, never readable by anyone. And that is the entire list. AzeuCafe never asks for your address, your birthday, your government ID. And because payment is cash at the counter, the system holds zero card numbers, zero wallet links, zero billing anything. Data you never give out cannot leak. What you DO give, the system protects — and the next slides show exactly how.',
   },
   {
     id: 11,
-    act: 'security',
-    kicker: 'Act 2 · Security',
-    title: 'Keys & honest limitations',
-    subtitle: 'Where the secret lives — and what happens if it is lost.',
-    content: 'keys',
+    act: 'protected',
+    kicker: 'How your data is protected',
+    title: 'Your name and phone go in a vault',
+    subtitle: 'The moment your order is placed, your details are scrambled into unreadable text that only the café can read back.',
+    content: 'cipher',
     script:
-      'Where does the magic key live? In exactly one place: the server .env file, on the server, gitignored — it has never been inside the Git history of this project and never inside the client bundle. AES_KEY is thirty-two random bytes, hex-encoded: sixty-four characters. JWT_SECRET guards the sessions, the same story. What happens if that file is lost? This is the part most projects hide — and we will say it out loud: the encrypted data becomes unreadable. By design, decryption does not lie: it refuses to return garbage or fake data. The system has a safeDecrypt helper that surfaces a marker — "unreadable — wrong key or tampered" — so the page keeps working and the owner knows something is wrong. The payload format is versioned — it starts with "v1", so if a key rotation were ever needed, it is a known upgrade path, not an archaeology project. That is honest engineering: a school-scale system has school-scale boundaries, and we can name them.',
+      'Here is what actually happens to the personal details you type. The moment your order is saved, the system locks your name and your phone inside a vault. What remains in the records does not look like "Juan Dela Cruz" — it looks like complete gibberish: random letters, numbers and symbols that mean nothing to anyone without the key. Picture it like this: you write your phone number on a slip of paper, put the paper in a locked steel box, and throw away the original slip. Anyone peeking at the box sees metal. Only the café itself holds the key — and it opens the box only at the moment it actually needs to call you about an order, then closes it again. No key, no peek: even a copy of the records without the key is just a pile of locked boxes. You can watch this protection run live two slides from now — with your own words.',
   },
   {
     id: 12,
-    act: 'aescrypt',
-    kicker: 'Act 3 · AESCrypt',
-    title: 'Meet the file',
-    subtitle: 'One module. Two functions. The entire security policy of the data layer.',
-    content: 'meet',
+    act: 'protected',
+    kicker: 'How your data is protected',
+    title: 'Watch it work — with your own words',
+    subtitle: 'Not a picture of encryption — the protection itself, running live.',
+    content: 'playground',
     script:
-      'Welcome to act three — where I stop describing and start showing. The entire data-security policy of AzeuCafe lives in one file, server/src/utils/aescrypt.js. The rulebook has one line on it: nothing else in the project is allowed to encrypt or decrypt — models and controllers import these two functions, and you will see on the next slide that this is literally true. Two functions. encrypt(text, key) takes any string and a thirty-two-byte hex key and returns the version pack — notice the algorithm is frozen inside the module: AES-256-GCM. It cannot be downgraded or misconfigured by a caller. It generates a fresh random IV each time, cipher.update, cipher.final, cipher.getAuthTag, and packs version, IV, tag, and ciphertext with base64 and dots. decrypt(text, key) is the exact inverse, and its most important property is what it does NOT do: it never returns garbage. Unknown format? Throw. Wrong key? Throw. One byte of the payload changed? GCM authentication fails, and final() throws. That is what "authenticated encryption" means — integrity is part of the deal, not an afterthought.',
+      'Let us make that concrete. This is a real demonstration — nothing staged, nothing recorded. I will type any words into this box; use one of your names from the audience, or "Juan Dela Cruz" if you prefer. I press ENCRYPT — and the system does to this sentence exactly what it does to your personal details every single time they enter the machine: it becomes unreadable letters and numbers. Then I press DECRYPT — and it comes back perfectly, because the system can always undo its own lock. One more trick: I corrupt ONE character of that scrambled text — a one-letter scratch — and try to decrypt it. The system refuses. It does not guess, it does not return garbage: an integrity check inside the protection fails loudly and the system raises its hand instead of lying. That is what protecting every order looks like from the inside. And the secret key that unscrambles your data never leaves the café.',
   },
   {
     id: 13,
-    act: 'aescrypt',
-    kicker: 'Act 3 · AESCrypt',
-    title: 'The REAL code',
-    subtitle: 'No mockup, no paraphrase — the actual file, bundled straight from the server.',
-    content: 'code',
+    act: 'protected',
+    kicker: 'How your data is protected',
+    title: 'Your password: unreadable, even to us',
+    subtitle: 'Checking a password and reading a password are two different things — this system can only ever do the first.',
+    content: 'passwords',
     script:
-      'This window is not a screenshot and not a paraphrase of the code. It is the actual file — the build imports it raw, straight out of the server folder, so what the class sees is exactly what runs. Top of file: the imports from node:crypto — createCipheriv, createDecipheriv, randomBytes — plus the header comment that acts as the law of the file: the single-gatekeeper rule, and the WHY of GCM: authenticated encryption, tamper-proof by construction. parseKey validates that the key is exactly 32 bytes; anything else refuses to run. Then encrypt: fresh twelve-byte IV so the same name never encrypts to the same ciphertext twice — I will show you that property live in one minute. The four pieces — version, IV, tag, ciphertext — are base64-joined with dots. And decrypt: format check, key check, setAuthTag, and final() as the cliff edge — a single flipped bit in the database makes it throw instead of surrendering fake data. Next slide: we run it.',
+      'Now the sacred one: your password. When you sign up, the system never keeps the password you typed — not in a file, not behind a lock, nowhere. Instead it computes a unique fingerprint of it and keeps only that. Think of how a fingerprint works: always the same for the same finger, impossible to reconstruct a person from, and useless to anyone who steals a fingerprint album. So when you log in, the system does not read your password back — it computes the fingerprint of what you just typed and simply checks: does it match the one on file? Yes, you are in. No, this is not you — without ever knowing the actual password. Which is why staff cannot reveal it, a breach cannot expose it, and you should still never reuse a password anywhere — this system guards what it holds, but a password reused on other sites is beyond this café’s reach.',
   },
   {
     id: 14,
-    act: 'aescrypt',
-    kicker: 'Act 3 · AESCrypt',
-    title: 'Live: encrypt, decrypt, tamper',
-    subtitle: 'The playground calls the REAL encrypt() and decrypt() on the server — try it while I talk.',
-    content: 'playground',
+    act: 'protected',
+    kicker: 'How your data is protected',
+    title: 'Who sees what — exactly',
+    subtitle: 'Personal data appears only where it must: on your screen, and on the café screen while it serves you.',
+    content: 'who',
     script:
-      'This playground is wired to two public demo endpoints that exist for exactly this slide — and they do not contain any demo crypto of their own. They call the real encrypt() and decrypt() functions from the aescrypt file you just saw. Type any name — try your own, or "Juan Dela Cruz" — and press Encrypt. The server answers with a fresh, unique ciphertext — the same words will never produce the same ciphertext twice — and you see it morph on screen. Note the beginning: "v1." — same as the ones you saw in the code, same as the values sitting encrypted in the classroom database right now. Now the part that usually gets applause: find one character inside that ciphertext and corrupt it — I gave you a button that flips exactly one character — then press Decrypt. The server REFUSES. It does not reply with garbled data, it does not guess, it throws and tells you the truth: wrong key or tampered. That is AES-256-GCM authentication working live — in front of you, in one click. And in all of this, the key never left the server — your words traveled, your words came back, and the secret stayed home.',
+      'Protection is also a question of who can see what, and here the answer is short. YOU see your own orders — your items, your notes, your totals, your history: your tickets, your business. THE CAFÉ sees the claim details of the orders it is serving — the name to call out, the phone to ring if there is a delay — and that is the extent of it; the café cannot see your password, cannot see the orders of another customer, and has no access to anything beyond its own counter work. EVERYONE ELSE sees the menu — photos, prices, descriptions — and exactly zero personal information, because the public side touches no personal data at all. A last tip that doubles as privacy advice: the counter asks for your CLAIM code, not your life story. The code proves you ordered without announcing anything about you — you can even send a friend to claim an order for you.',
   },
   {
     id: 15,
@@ -162,16 +165,16 @@ export const slides = [
     subtitle: '',
     content: 'team',
     script:
-      'Quick beat before the last slide, on a matter of fairness: who built this. I am Uelmark G. Valdehueza — AzeuMark — I designed and built the whole system end to end: the React client, the Express server, the MongoDB schema, the AESCrypt module, the order state machine, and this presentation. The dashed slot beside me on the slide is intentionally reserved for my teammate — their name and role will be added in the final version of this deck. One more thing worth saying: the testing plan cut in two directions. User journeys were driven through the real UI — and then attacker attempts were driven against the API behind its back: invalid item ids, totals made up from client prices, tampered ciphertexts, cancel attempts from roles that should not be allowed. The rules held. That is why the demo you just saw works not only when you are friendly, but also when you are not.',
+      'A quick beat about the people behind this before we land. I am Uelmark G. Valdehueza — AzeuMark — and I built AzeuCafe from first sketch to final product: the customer journey you just walked through, the owner side of the counter, and every protection we discussed. The dashed card beside mine is deliberately reserved for my teammate — their name and role will be added in the final version of this deck. One more thing worth saying: this system was run through real situations before it was shown to anyone. First orders, changed minds, sold-out items retired mid-day, orders cancelled from both sides, logins from different devices — the rules held in every single case. What you saw today is not a mockup: it is a working café, and it is running as we speak.',
   },
   {
     id: 16,
     act: null,
     kicker: 'Summary',
     title: 'Thank you — and questions?',
-    subtitle: 'The system is real, the code is real, the audience was the first attack class it survived.',
+    subtitle: '',
     content: 'thanks',
     script:
-      'Let me land this in thirty seconds. AzeuCafe: a café ordering system where payment happens at the counter in cash, customers get claim codes, and orders walk a strict five-status state machine that the server, not the screen, enforces. Security as an idea, not a feature: passwords hashed with bcrypt — a one-way door with a salt; personal data — names, phones, and every order claim snapshot — encrypted with AES-256-GCM, authenticated, tamper-proof, key held only in the server .env; email openly plaintext because that is what email is for; and project-scale honesty about limitations — the versioned payloads and the safeDecrypt pathway point to known upgrade paths instead of wishful thinking. Every promise in this deck maps to a file in the repository: server-plan.md, client-plan.md and implemented.md say where everything lives, and the code you just watched run is the same code in the demo database right now. Thank you for listening — and I am happy to take questions.',
+      'Let me land the whole talk in thirty seconds. To USE AzeuCafe: browse the menu, build your cart, place your order, keep your AZ claim code, pay cash at the counter, and follow everything on My Orders. Cancel freely while your order is still Waiting; when it is Ready, tap "mark completed" — and if it is Processing, the counter is one conversation away. To TRUST it: AzeuCafe collects only what it needs — and nothing else; it holds zero payment data because payment is cash; your name, phone and claim details are locked in a vault the moment they arrive, opened only by the café while it serves you; your password is stored as an unreadable fingerprint that nobody — including the café — can turn back; and every screen shows each person exactly what they need and nothing wider. Thank you very much for listening — I will happily take your questions now.',
   },
 ]
