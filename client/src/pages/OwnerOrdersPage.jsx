@@ -65,11 +65,11 @@ export default function OwnerOrdersPage() {
   }
 
   const counts = STATUS_FILTERS.reduce((acc, f) => {
-    acc[f.id] = f.id === 'all' ? orders?.length ?? 0 : orders?.filter((o) => o.status === f.id).length ?? 0
+    acc[f.id] = f.id === 'all' ? (orders?.length ?? 0) : (orders ? orders.filter((o) => o.status === f.id).length : 0)
     return acc
   }, {})
 
-  const visible = filter === 'all' ? orders : orders?.filter((o) => o.status === filter) ?? []
+  const visible = (filter === 'all' ? orders : orders?.filter((o) => o.status === filter)) ?? []
 
   const dateLabel = (iso) =>
     new Date(iso).toLocaleString('en-PH', { timeStyle: 'short', dateStyle: 'medium' })

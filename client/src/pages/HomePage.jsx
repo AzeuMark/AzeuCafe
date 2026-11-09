@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { get } from '../api/client.js'
 import { peso } from '../utils/format.js'
+import MenuItemPhoto from '../components/MenuItemPhoto.jsx'
 import heroImg from '../assets/landing-hero.jpg'
 import interiorImg from '../assets/landing-interior.jpg'
 
@@ -42,14 +43,6 @@ const HOURS = [
 
 /** Menu teaser favorites: preferred items first, then whatever the seed gives us. */
 const PREFFERED_TEASER = ['Cappuccino', 'Butter Croissant', 'Clubhouse Sandwich']
-
-function Monogram({ name }) {
-  return (
-    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-caramel/15 font-display text-2xl text-caramel-deep dark:bg-caramel/10 dark:text-caramel">
-      {(name || '?').charAt(0).toUpperCase()}
-    </span>
-  )
-}
 
 export default function HomePage() {
   const [teaserItems, setTeaserItems] = useState([])
@@ -278,7 +271,11 @@ export default function HomePage() {
               {...rise(index * 0.06)}
               className="grid items-center gap-4 border-b border-espresso/10 py-5 last:border-b-0 sm:grid-cols-[56px,1fr,auto] dark:border-milk/10"
             >
-              <Monogram name={item.name} />
+              <MenuItemPhoto
+                name={item.name}
+                image={item.image}
+                className="h-14 w-14 shrink-0 rounded-xl"
+              />
               <div>
                 <h3 className="font-display text-lg">{item.name}</h3>
                 <p className="mt-0.5 text-sm text-bean/60 dark:text-milk/60">{item.description}</p>
@@ -289,8 +286,7 @@ export default function HomePage() {
         </ul>
 
         <motion.p {...rise(0.1)} className="mt-4 text-xs text-bean/50 dark:text-milk/50">
-          Menu photos arrive with the ordering phase — the counter keeps its
-          letters meanwhile.
+          Hand-crafted espresso drinks, iced favorites, and freshly baked pastries — ready to order ahead.
         </motion.p>
       </section>
 

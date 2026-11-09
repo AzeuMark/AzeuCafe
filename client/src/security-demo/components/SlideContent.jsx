@@ -45,9 +45,9 @@ function TitleSlide({ slide }) {
       </motion.p>
 
       <motion.div {...rise(0.6)} className="mt-8 flex flex-col items-center gap-1.5">
-        <span className="font-display text-2xl">Uelmark G. Valdehueza</span>
+        <span className="font-display text-2xl">Uelmark G. Valdehueza &amp; Vernelle Jhay Balatayo</span>
         <span className="font-mono text-xs uppercase tracking-[0.3em] text-caramel-deep dark:text-caramel">
-          aka AzeuMark
+          Project Developers
         </span>
       </motion.div>
 
@@ -573,29 +573,28 @@ function TeamSlide({ slide }) {
           </span>
           <p className="mt-4 font-display text-2xl">Uelmark G. Valdehueza</p>
           <p className="mt-1 font-mono text-xs uppercase tracking-[0.25em] text-caramel-deep dark:text-caramel">
-            AzeuMark
+            AzeuMark · Full Stack Developer
           </p>
           <ul className="mt-4 space-y-1.5 text-sm opacity-85">
-            <li>Built AzeuCafe from first sketch to finished product</li>
-            <li>Customer experience · owner counter · the protections</li>
-            <li>This presentation</li>
+            <li>Architecture, backend API &amp; AESCrypt security core</li>
+            <li>Customer experience &amp; owner queue management</li>
+            <li>Interactive presentation deck &amp; motion system</li>
           </ul>
         </motion.div>
 
-        <motion.div
-          {...rise(0.35)}
-          className="rounded-2xl border-2 border-dashed border-espresso/25 bg-transparent p-6 text-center dark:border-milk/25"
-        >
-          <span className="mx-auto grid h-20 w-20 place-items-center rounded-2xl border-2 border-dashed border-espresso/25 font-mono text-2xl opacity-50 dark:border-milk/25">
-            ?
+        <motion.div {...rise(0.35)} className="rounded-2xl border border-caramel/50 bg-caramel/10 p-6 text-center">
+          <span className="mx-auto grid h-20 w-20 place-items-center rounded-2xl bg-espresso font-display text-3xl text-milk dark:bg-milk dark:text-espresso">
+            VB
           </span>
-          <p className="mt-4 font-display text-2xl opacity-70">Team member slot</p>
-          <p className="mt-1 font-mono text-xs uppercase tracking-[0.25em] opacity-55">
-            reserved · name & role to be added
+          <p className="mt-4 font-display text-2xl">Vernelle Jhay Balatayo</p>
+          <p className="mt-1 font-mono text-xs uppercase tracking-[0.25em] text-caramel-deep dark:text-caramel">
+            Co-Developer · Full Stack Project Partner
           </p>
-          <p className="mx-auto mt-4 max-w-xs text-sm opacity-70">
-            A seat kept warm — the final deck credits both builders of AzeuCafe.
-          </p>
+          <ul className="mt-4 space-y-1.5 text-sm opacity-85">
+            <li>Collaborative development of ordering flow &amp; menu system</li>
+            <li>Quality UX/UI styling, layout review &amp; user experience</li>
+            <li>End-to-end functionality testing &amp; project validation</li>
+          </ul>
         </motion.div>
       </div>
     </div>
@@ -628,9 +627,9 @@ function ThanksSlide() {
 
       <motion.div {...rise(0.45)} className="mt-9 flex flex-col items-center gap-1">
         <span className="font-mono text-xs uppercase tracking-[0.35em] text-caramel-deep dark:text-caramel">
-          AzeuMark · 2026
+          AzeuCafe Team · 2026
         </span>
-        <span className="text-sm opacity-70">Uelmark G. Valdehueza — and the reserved seat beside him.</span>
+        <span className="text-sm opacity-70">Uelmark G. Valdehueza &amp; Vernelle Jhay Balatayo</span>
       </motion.div>
     </div>
   )

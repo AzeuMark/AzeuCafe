@@ -30,11 +30,11 @@ export default function Footer() {
 
         <div className="text-sm">
           <span className="text-[11px] font-semibold uppercase tracking-widest text-caramel-deep">
-            Made by
+            Project Team
           </span>
-          <p className="mt-2 font-medium">Uelmark G. Valdehueza</p>
+          <p className="mt-2 font-medium">Uelmark G. Valdehueza &amp; Vernelle Jhay Balatayo</p>
           <p className="font-mono text-xs text-bean/60 dark:text-milk/60">
-            AzeuMark · © 2026 AzeuCafe
+            AzeuCafe · © 2026
           </p>
         </div>
       </div>

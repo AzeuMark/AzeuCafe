@@ -52,7 +52,7 @@ export default function OwnerMenuPage() {
     })).filter((g) => g.items.length > 0)
   }, [items, showRetired])
 
-  const retiredCount = items?.filter((it) => it.retired).length ?? 0
+  const retiredCount = items ? items.filter((it) => it.retired).length : 0
 
   async function retire(item) {
     if (!window.confirm(`Retire “${item.name}”? It disappears from the public menu but stays in order history.`)) return

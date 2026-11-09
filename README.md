@@ -135,4 +135,4 @@ cloudflared tunnel --url http://localhost:5173   # prints a public URL
 - Payment is **cash only** — there is no gateway, no card data, anywhere.
 - Everything bundled (photos, fonts) so the demo works with **zero internet**.
 
-Built by **Uelmark G. Valdehueza (AzeuMark)** · 2026.
+Built by **Uelmark G. Valdehueza (AzeuMark)** &amp; **Vernelle Jhay Balatayo** · 2026.

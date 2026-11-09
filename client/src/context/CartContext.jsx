@@ -15,13 +15,21 @@ function loadInitial() {
     return parsed
       .filter((it) => it && typeof it.id === 'string' && Number.isFinite(it.qty) && it.qty > 0)
       .slice(0, 50)
-      .map((it) => ({
-        id: it.id,
-        name: String(it.name ?? ''),
-        price: Number(it.price) || 0,
-        image: String(it.image ?? ''),
-        qty: Math.min(50, Math.max(1, Math.floor(it.qty))),
-      }))
+      .map((it) => {
+        let image = ''
+        if (it.image && typeof it.image === 'object') {
+          image = { type: it.image.type ?? 'library', path: String(it.image.path ?? '') }
+        } else if (typeof it.image === 'string' && it.image !== '[object Object]') {
+          image = it.image
+        }
+        return {
+          id: it.id,
+          name: String(it.name ?? ''),
+          price: Number(it.price) || 0,
+          image,
+          qty: Math.min(50, Math.max(1, Math.floor(it.qty))),
+        }
+      })
   } catch {
     return []
   }

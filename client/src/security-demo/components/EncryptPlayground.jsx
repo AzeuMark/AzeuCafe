@@ -34,7 +34,7 @@ const btnPrimary = `${btn} bg-espresso text-milk hover:bg-caramel-deep dark:bg-m
 const btnGhost = `${btn} border border-espresso/25 hover:border-caramel dark:border-milk/25`
 
 export default function EncryptPlayground() {
-  const [text, setText] = useState('Uelmark owes Azeu a coffee')
+  const [text, setText] = useState('Uelmark 09123456789')
   const [cipher, setCipher] = useState('')
   const [shownCipher, setShownCipher] = useState('') // what the Decrypt button sends
   const [tampered, setTampered] = useState(false)

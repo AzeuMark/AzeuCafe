@@ -286,15 +286,36 @@ project map without CodeWindow)
 - oxlint: 0 errors (pre-existing fast-refresh warnings unchanged) ✓
 - `vite build` → 481 modules ✓ (again after the `vite.config.js` trim)
 - `node --check` on the controller ✓
-- to-do: groupmate's name + role → team slide 15 dashed card (one-line change)
-- Follow-up (2026-11-06, video submission): narration trimmed to **≈860 words ≈ 5½ min**
-  at presentation pace (measured by a word-count script) — every rhetorical question
-  removed (scripts + titles now purely explanatory), "try it with me" audience talk
-  reworded for recording, closer retitle → **"Thank you for watching"** with sub-line
-  "Order ahead · pay cash · your data stays yours". Act 2 assurances all retained
-  explicitly: keep-only-what-is-needed · zero card data (cash) · vault + key-only-café ·
-  tamper refusal (never returns garbage) · one-way password fingerprint · who-sees-what ·
-  claim-code-not-life-story.
+---
+
+## [Phase 8 — Team Credit & Full-Stack Reliability QA Pass] — 2026-11-09
+
+**Status:** ✅ complete & verified (35/35 E2E assertions passing)
+
+### Built & Fixed
+- **Session Auth Route Fix**: Added missing `requireAuth` middleware to `GET /api/auth/me` in `server/src/routes/auth.routes.js`. Previously, `req.user` was not attached on `/me`, throwing a `TypeError` and causing logged-in sessions to fail on page refresh.
+- **Robust Environment Loading**: Updated `server/src/index.js` and `seed.js` to resolve `.env` paths relative to `__dirname`, ensuring consistent behavior regardless of the current working directory.
+- **Seed Enhancement**: `seed.js` now ensures both `owner` and `owner@azeucafe.local` handles with the configured password, supporting flexible login credentials.
+- **Universal Presentation Script**: Revised all speaker scripts in `client/src/security-demo/data/slides.js` to speak as a whole team without individual singular names, making it natural for any presenter.
+- **Group Partner Integration**: Added project friend & co-developer **Vernelle Jhay Balatayo**:
+  - Slide 1: Presented by project developers Uelmark G. Valdehueza & Vernelle Jhay Balatayo.
+  - Slide 15: Replaced the reserved dashed slot with a complete card for Vernelle Jhay Balatayo (VB) highlighting full-stack collaboration, UI/UX styling, and validation.
+  - Slide 16 & SlideDeck: Updated team signatures and footer credits.
+  - Site Footer & README: Credited both builders across the application.
+- **Landing Teaser Upgrade**: `HomePage.jsx` now renders live `MenuItemPhoto` components with monogram fallbacks for fresh items, replacing obsolete placeholder notes.
+- **Registration Form Validation**: Adjusted password input in `AuthModal.jsx` to `minLength={6}` matching the backend policy.
+- **Owner Dashboard Crash Fix**: Fixed a runtime `TypeError: Cannot read properties of undefined (reading 'length')` in [`OwnerOrdersPage.jsx`](file:///d:/Others/Azeu%20Codes/AzeuCafe/client/src/pages/OwnerOrdersPage.jsx) and [`OwnerMenuPage.jsx`](file:///d:/Others/Azeu%20Codes/AzeuCafe/client/src/pages/OwnerMenuPage.jsx). When `orders` or `items` was `null` on initial mount, `orders?.filter(...)` evaluated to `undefined`, and `.length` crashed the entire React component tree leaving a blank screen. Guarded all count reductions.
+- **Application ErrorBoundary**: Added an [`ErrorBoundary`](file:///d:/Others/Azeu%20Codes/AzeuCafe/client/src/components/ErrorBoundary.jsx) wrapping all `<Routes>` in [`App.jsx`](file:///d:/Others/Azeu%20Codes/AzeuCafe/client/src/App.jsx) to prevent white/blank screens on unexpected runtime errors.
+- **Cart Storage Deserialization Guard**: In [`CartContext.jsx`](file:///d:/Others/Azeu%20Codes/AzeuCafe/client/src/context/CartContext.jsx), sanitized loaded item images so object structures `{ type, path }` survive local storage reloads without becoming `"[object Object]"`.
+- **Automated E2E Test Suite**: Created `server/src/scripts/testE2E.js` covering 35 rigorous checks across all MERN features, AES encryption at rest, and the state machine.
+
+### Verification
+- `node server/src/scripts/testE2E.js` → **35/35 PASS** (100% success rate)
+- `npm run test:crypto` → **5/5 PASS**
+- `npm run seed` → Both owner accounts verified & seeded
+- `npm --prefix client run build` → Built in 350ms with 0 errors
+- `npm --prefix client run lint` → 0 errors
+
 
 
 

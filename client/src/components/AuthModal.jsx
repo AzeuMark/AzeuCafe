@@ -108,7 +108,7 @@ function AuthModalBody({ initialMode }) {
                 </label>
                 <input
                   id="auth-email"
-                  type="email"
+                  type="text"
                   required
                   autoFocus
                   autoComplete="email"
@@ -126,7 +126,7 @@ function AuthModalBody({ initialMode }) {
                   id="auth-password"
                   type="password"
                   required
-                  minLength={6}
+                  minLength={5}
                   autoComplete="current-password"
                   className={inputClass}
                   placeholder="••••••••"

@@ -1,6 +1,11 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import 'dotenv/config'
+import dotenv from 'dotenv'
+
+// Load .env relative to the server folder so it works from any working directory
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+dotenv.config({ path: path.resolve(__dirname, '../.env') })
+dotenv.config()
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'

@@ -125,7 +125,7 @@ export default function SlideDeck() {
       <header className="mx-auto flex w-full max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
         <span className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.25em] text-caramel-deep dark:text-caramel">
           <CupMark />
-          AzeuMark
+          AzeuCafe
         </span>
         <span className="hidden h-4 w-px bg-espresso/15 sm:block dark:bg-milk/15" />
         <span className="hidden truncate font-mono text-xs opacity-60 sm:block">
@@ -190,7 +190,7 @@ export default function SlideDeck() {
       {/* footer: signature · dots · arrows */}
       <footer className="mx-auto flex w-full max-w-7xl flex-wrap items-center gap-3 px-4 pb-4 sm:px-6">
         <span className="hidden font-mono text-[11px] text-bean/60 sm:block dark:text-milk/60">
-          Uelmark G. Valdehueza
+          Uelmark G. Valdehueza &amp; Vernelle Jhay Balatayo
         </span>
 
         <div className="mx-auto flex flex-wrap items-center justify-center gap-1.5" aria-label="Slides">

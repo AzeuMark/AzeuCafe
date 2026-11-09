@@ -24,13 +24,13 @@ export const slides = [
   {
     id: 1,
     act: null,
-    kicker: 'AzeuMark presents',
+    kicker: 'Project Presentation',
     title: 'AzeuCafe',
     subtitle:
       'Order ahead from your phone, pay cash at the counter — and rest easy, because your personal data is protected the whole way.',
     content: 'title',
     script:
-      'Hi everyone — I am Uelmark G. Valdehueza, online I go by AzeuMark, and this is AzeuCafe. In the next five minutes you will learn two things: how to use it, as customer and as café — and how it protects the personal details you type in when you order.',
+      'Welcome everyone to AzeuCafe. In the next five minutes, we will walk through two key areas: how the system works for both customers and the café counter, and how every personal detail is securely protected from end to end.',
   },
   {
     id: 2,
@@ -140,7 +140,7 @@ export const slides = [
     subtitle: 'Not a picture of encryption — the protection itself, running live.',
     content: 'playground',
     script:
-      'This is the real system, live on screen. I type any words, press Encrypt — they come out scrambled, exactly like your order details, every time. Decrypt brings them back, perfectly. Then I corrupt one character and try to decrypt. The system refuses: it will not guess, it will not return garbage — the integrity check raises its hand instead of lying. And the key never leaves the café.',
+      'This is the real system running live on screen. When text is entered and encrypted, it comes out scrambled—just like the personal details in a customer\'s order. Decrypting brings it back perfectly. If even a single character in the scrambled text is corrupted, the system immediately refuses to decrypt. It will not guess, and it will not return garbage; the integrity check raises its hand instead of lying. And the secret key never leaves the café.',
   },
   {
     id: 13,
@@ -170,7 +170,7 @@ export const slides = [
     subtitle: '',
     content: 'team',
     script:
-      'I am Uelmark G. Valdehueza — AzeuMark — and I built AzeuCafe end to end: the customer flow, the owner side, and every protection you just saw. The dashed card beside mine is reserved for my teammate. And none of it is a mockup: the café is running live right now.',
+      'AzeuCafe was designed and developed as a collaborative team project. Our team built the entire application end to end—from the customer ordering flow and real-time owner operations to the database security and cryptographic protections. What you see is a fully functional, live system built with care.',
   },
   {
     id: 16,

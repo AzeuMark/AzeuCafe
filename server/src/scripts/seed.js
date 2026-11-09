@@ -4,12 +4,18 @@
  *    never create owners — this script is the ONLY creator)
  *  - upserts the 12 sample menu items (idempotent by name+category)
  */
-import 'dotenv/config'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import dotenv from 'dotenv'
 import bcrypt from 'bcryptjs'
 import mongoose from 'mongoose'
 import { encrypt } from '../utils/aescrypt.js'
 import User from '../models/user.model.js'
 import MenuItem from '../models/menuItem.model.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+dotenv.config({ path: path.resolve(__dirname, '../../.env') })
+dotenv.config()
 
 const KEY = () => process.env.AES_KEY
 
@@ -37,23 +43,27 @@ async function main() {
   await mongoose.connect(uri)
   console.log('MongoDB connected for seeding.')
 
-  // 1) Owner account
-  const ownerEmail = String(process.env.OWNER_EMAIL ?? 'owner@azeucafe.local').toLowerCase()
-  const ownerPassword = String(process.env.OWNER_PASSWORD ?? 'owner1234')
+  // 1) Owner accounts (supports both .env configuration and standard demo email)
+  const ownerEmail = String(process.env.OWNER_EMAIL ?? 'owner').toLowerCase()
+  const ownerPassword = String(process.env.OWNER_PASSWORD ?? 'owner123')
   const ownerName = String(process.env.OWNER_NAME ?? 'Owner')
-  await User.updateOne(
-    { email: ownerEmail },
-    {
-      $set: {
-        name: encrypt(ownerName, KEY()), // name encrypted like every user's
-        password: await bcrypt.hash(ownerPassword, 10),
-        role: 'owner',
+
+  const ownerAccounts = Array.from(new Set([ownerEmail, 'owner@azeucafe.local', 'owner']))
+  for (const email of ownerAccounts) {
+    await User.updateOne(
+      { email },
+      {
+        $set: {
+          name: encrypt(ownerName, KEY()), // name encrypted like every user's
+          password: await bcrypt.hash(ownerPassword, 10),
+          role: 'owner',
+        },
+        $setOnInsert: { email, phone: '' },
       },
-      $setOnInsert: { email: ownerEmail, phone: '' },
-    },
-    { upsert: true },
-  )
-  console.log(`Owner ensured: ${ownerEmail} (password from OWNER_PASSWORD)`)
+      { upsert: true },
+    )
+    console.log(`Owner ensured: ${email}`)
+  }
 
   // 2) Menu items
   let created = 0
