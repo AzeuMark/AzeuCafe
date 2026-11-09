@@ -2,6 +2,7 @@
   "name": "azeucafe",
   "private": true,
   "scripts": {
+    "build": "npm run build --prefix client",
     "dev": "concurrently -n srv,web -c yellow,cyan \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "setup": "npm install --prefix server && npm install --prefix client",
     "seed": "npm run seed --prefix server",
