@@ -1,5 +1,7 @@
 /** Thin fetch wrapper for the AzeuCafe API. Every request carries the session cookie. */
 
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
+
 export class ApiError extends Error {
   constructor(message, status) {
     super(message)
@@ -16,7 +18,7 @@ async function request(path, { method = 'GET', body, form, signal } = {}) {
         ? { 'Content-Type': 'application/json' }
         : undefined
 
-  const res = await fetch(`/api${path}`, {
+  const res = await fetch(`${API_BASE}/api${path}`, {
     method,
     credentials: 'include',
     headers,
