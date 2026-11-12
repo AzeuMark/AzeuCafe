@@ -3,11 +3,11 @@
   "rewrites": [
     {
       "source": "/api/:match*",
-      "destination": "https://azeucafe-production.up.railway.app//api/:match*"
+      "destination": "https://azeucafe-production.up.railway.app/api/:match*"
     },
     {
       "source": "/uploads/:match*",
-      "destination": "https://azeucafe-production.up.railway.app//uploads/:match*"
+      "destination": "https://azeucafe-production.up.railway.app/uploads/:match*"
     },
     {
       "source": "/(.*)",
